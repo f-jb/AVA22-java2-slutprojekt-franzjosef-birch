@@ -2,8 +2,11 @@ package se.kaiserbirch.model;
 
 public class WorkFactory {
     static volatile WorkFactory workFactory;
-    private int counter = 0;
+    private static int counter = 0;
     private WorkFactory(){};
+    public static void resetCounter(){
+        counter = 0;
+    }
     public static WorkFactory getInstance() {
         if(workFactory == null){
             synchronized (WorkFactory.class) {

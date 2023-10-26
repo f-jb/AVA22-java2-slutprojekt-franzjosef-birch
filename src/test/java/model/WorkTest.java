@@ -1,5 +1,6 @@
 package model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.kaiserbirch.model.Work;
 import se.kaiserbirch.model.WorkFactory;
@@ -7,30 +8,39 @@ import se.kaiserbirch.model.WorkFactory;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class WorkTest {
+    @BeforeEach
+    void setup(){
+        WorkFactory.resetCounter();
+
+
+    }
+
     @Test
-    void createWorkWithNullProducer_throwsNullProducer() {
-        String producer = null;
+    void createWorkWithNullProducer_throwsNullPointerException() {
         var workFactory = WorkFactory.getInstance();
-        Exception exception = assertThrows(NullPointerException.class, () -> workFactory.getWorkUnit(null));
+        assertThrows(NullPointerException.class, () -> workFactory.getWorkUnit(null));
 
     }
     @Test
     void createAnUnitOfWork_workIdIncrements() {
         String producer = "Sally";
-        int expectedId = 15;
+        final int expectedId = 15;
         var workFactory = WorkFactory.getInstance();
-        Work work = workFactory.getWorkUnit(producer);
-        for (int i = 0; i < expectedId ; i++) {
+        Work work = null;
+        for (int i = 0; i < expectedId + 1 ; i++) {
             work = workFactory.getWorkUnit(producer);
         }
-        assertEquals(work.getId(),expectedId);
+        assertEquals(expectedId,work.getId());
 
     }
     @Test
-    void setProducerOfWork() {
-        String producer = "Sally";
+    void createAnUnitOfWorkWithSpecificProducer_producerIsSetInWork() {
+        String firstProducer = "Sally";
+        String secondProducer = "Harry";
         var workFactory = WorkFactory.getInstance();
-        var workZero = workFactory.getWorkUnit(producer);
-        assertEquals(workZero.getProducer(),producer);
+        var workZero = workFactory.getWorkUnit(firstProducer);
+        var workOne = workFactory.getWorkUnit(secondProducer);
+        assertEquals(workZero.getProducer(),firstProducer);
+        assertEquals(workOne.getProducer(),secondProducer);
     }
 }
