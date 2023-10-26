@@ -14,17 +14,12 @@ public class WorkFactory {
         }
         return workFactory;
     }
-    public Work getWorkUnit(String producer) throws NullProducerException {
+    public Work getWorkUnit(String producer) {
         if(producer == null){
-            throw new NullProducerException();
+            throw new NullPointerException();
         }
         return new WorkImpl(counter++,producer);
 
     }
-    public static class NullProducerException extends Exception{
-        public NullProducerException(){
-            super();
-        }
 
-    }
 }
