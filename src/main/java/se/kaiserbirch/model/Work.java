@@ -1,10 +1,10 @@
 package se.kaiserbirch.model;
 
 
-public abstract class Work {
+public class Work {
     private final int id;
-    private final String producer;
-    Work(int id, String producer){
+    private final Producer producer;
+    Work(int id, Producer producer){
         this.id = id;
         this.producer = producer;
     }
@@ -12,7 +12,7 @@ public abstract class Work {
     public int getId() {
         return id;
     }
-    public String getProducer() {
+    public Producer getProducer() {
         return producer;
     }
 
@@ -22,6 +22,6 @@ public abstract class Work {
      */
     @Override
     public String toString() {
-        return "Work " + id + " produced by " + producer;
+        return "Work " + id + " produced by producer " + producer.getId();
     }
 }

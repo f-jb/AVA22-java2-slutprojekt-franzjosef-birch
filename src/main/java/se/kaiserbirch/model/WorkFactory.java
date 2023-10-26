@@ -17,11 +17,11 @@ public class WorkFactory {
         }
         return workFactory;
     }
-    public Work getWorkUnit(String producer) {
+    public Work getWorkUnit(Producer producer) {
         if(producer == null){
             throw new NullPointerException();
         }
-        return new WorkImpl(counter++,producer);
+        return new Work(counter++,producer);
 
     }
 
