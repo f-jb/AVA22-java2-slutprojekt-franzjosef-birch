@@ -3,7 +3,7 @@ package se.kaiserbirch.model;
 public class WorkFactory {
     static volatile WorkFactory workFactory;
     private static int counter = 0;
-    private WorkFactory(){};
+    private WorkFactory(){}
     public static void resetCounter(){
         counter = 0;
     }
