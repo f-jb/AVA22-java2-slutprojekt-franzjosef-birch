@@ -5,7 +5,7 @@ import java.util.List;
 
 import static java.lang.Thread.sleep;
 
-public class Producer extends Worker{
+public class Producer extends Worker {
     WorkFactory workFactory = WorkFactory.getInstance();
 
     Producer(int id, List<Work> workList, int interval) {

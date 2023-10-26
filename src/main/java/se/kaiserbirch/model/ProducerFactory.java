@@ -13,17 +13,17 @@ public class ProducerFactory extends WorkerFactory {
 
     @Override
     public Producer getWorkerWithFixedInterval(int interval) {
-        return new Producer(createdProducers++,workList, interval);
+        return new Producer(createdProducers++, workList, interval);
     }
 
     @Override
     public Producer getWorkerWithRandomInterval(int low, int high) {
-        int interval = ThreadLocalRandom.current().nextInt(low,high);
-        return new Producer(createdProducers++,workList, interval);
+        int interval = ThreadLocalRandom.current().nextInt(low, high);
+        return new Producer(createdProducers++, workList, interval);
     }
 
     @Override
     public Producer getWorkerWithNoInterval() {
-        return new Producer(createdProducers++,workList, 0);
+        return new Producer(createdProducers++, workList, 0);
     }
 }

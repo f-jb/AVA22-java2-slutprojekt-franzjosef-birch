@@ -3,25 +3,30 @@ package se.kaiserbirch.model;
 public class WorkFactory {
     static volatile WorkFactory workFactory;
     private static int counter = 0;
-    private WorkFactory(){}
-    public static void resetCounter(){
+
+    private WorkFactory() {
+    }
+
+    public static void resetCounter() {
         counter = 0;
     }
+
     public static WorkFactory getInstance() {
-        if(workFactory == null){
+        if (workFactory == null) {
             synchronized (WorkFactory.class) {
-                if(workFactory == null) {
+                if (workFactory == null) {
                     workFactory = new WorkFactory();
                 }
             }
         }
         return workFactory;
     }
+
     public Work getWorkUnit(Producer producer) {
-        if(producer == null){
+        if (producer == null) {
             throw new NullPointerException();
         }
-        return new Work(counter++,producer);
+        return new Work(counter++, producer);
 
     }
 

@@ -2,7 +2,6 @@ package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import se.kaiserbirch.model.Producer;
 import se.kaiserbirch.model.ProducerFactory;
 import se.kaiserbirch.model.Work;
 import se.kaiserbirch.model.WorkFactory;
