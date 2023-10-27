@@ -3,8 +3,6 @@ package model;
 import org.junit.jupiter.api.Test;
 import se.kaiserbirch.model.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 

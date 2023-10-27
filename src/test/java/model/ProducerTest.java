@@ -5,8 +5,6 @@ import se.kaiserbirch.model.Producer;
 import se.kaiserbirch.model.ProducerFactory;
 import se.kaiserbirch.model.Work;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 

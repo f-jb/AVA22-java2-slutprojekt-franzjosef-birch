@@ -1,11 +1,10 @@
 package se.kaiserbirch.model;
 
-import java.time.Duration;
 import java.util.concurrent.BlockingQueue;
 
-import static java.lang.Thread.sleep;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
-public class Consumer extends Worker{
+public class Consumer extends Worker {
 
 
     Consumer(int id, BlockingQueue<Work> workQueue, int interval) {
@@ -18,11 +17,13 @@ public class Consumer extends Worker{
 
     @Override
     public void run() {
-        try {
-            sleep(Duration.ofSeconds(interval));
-            workQueue.take();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        while (active) {
+            try {
+                SECONDS.sleep(interval);
+                workQueue.take();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

@@ -5,11 +5,14 @@ import java.util.concurrent.BlockingQueue;
 public abstract class Worker implements Runnable {
     final int id;
     final int interval;
-    BlockingQueue<Work> workQueue;
+    boolean active;
+    final BlockingQueue<Work> workQueue;
+
     Worker(int id, BlockingQueue<Work> workQueue, int interval) {
         this.id = id;
         this.workQueue = workQueue;
         this.interval = interval;
+        this.active = true;
     }
 
     public int getId() {
@@ -18,6 +21,10 @@ public abstract class Worker implements Runnable {
 
     public int getInterval() {
         return interval;
+    }
+
+    public void stop() {
+        this.active = false;
     }
 
 

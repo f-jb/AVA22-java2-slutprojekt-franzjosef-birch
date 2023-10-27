@@ -23,6 +23,13 @@ public class ProducerFactory extends WorkerFactory {
     }
 
     @Override
+    public String toString() {
+        return "ProducerFactory{" +
+                "createdProducers=" + createdProducers +
+                '}';
+    }
+
+    @Override
     public Producer getWorkerWithNoInterval() {
         return new Producer(createdProducers++, workQueue, 0);
     }
