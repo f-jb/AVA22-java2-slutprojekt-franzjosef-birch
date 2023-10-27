@@ -1,14 +1,14 @@
 package se.kaiserbirch.model;
 
-import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 public abstract class Worker implements Runnable {
     final int id;
     final int interval;
-    List<Work> workList;
-    Worker(int id, List<Work> workList, int interval) {
+    BlockingQueue<Work> workQueue;
+    Worker(int id, BlockingQueue<Work> workQueue, int interval) {
         this.id = id;
-        this.workList = workList;
+        this.workQueue = workQueue;
         this.interval = interval;
     }
 

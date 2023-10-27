@@ -22,7 +22,7 @@ public class WorkFactory {
         return workFactory;
     }
 
-    public Work getWorkUnit(Producer producer) {
+    public Work createWorkUnit(Producer producer) {
         if (producer == null) {
             throw new NullPointerException();
         }

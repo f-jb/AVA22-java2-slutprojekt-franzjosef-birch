@@ -1,15 +1,15 @@
 package se.kaiserbirch.model;
 
 import java.time.Duration;
-import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 import static java.lang.Thread.sleep;
 
 public class Producer extends Worker {
     WorkFactory workFactory = WorkFactory.getInstance();
 
-    Producer(int id, List<Work> workList, int interval) {
-        super(id, workList, interval);
+    Producer(int id, BlockingQueue<Work> workQueue, int interval) {
+        super(id, workQueue, interval);
     }
 
 
@@ -17,14 +17,14 @@ public class Producer extends Worker {
     public void run() {
         try {
             sleep(Duration.ofSeconds(interval));
-            workList.add(workFactory.getWorkUnit(this));
+            workQueue.put(workFactory.createWorkUnit(this));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void produce() {
-        workList.add(workFactory.getWorkUnit(this));
+        workQueue.add(workFactory.createWorkUnit(this));
 
     }
 

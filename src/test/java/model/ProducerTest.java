@@ -7,34 +7,36 @@ import se.kaiserbirch.model.Work;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProducerTest {
     @Test
     void producerProducesAWorkUnit_aWorkUnitIsCreated(){
-        List<Work> workList = new ArrayList<>();
-        var producerFactory = new ProducerFactory(workList);
+        BlockingQueue<Work> workQueue = new LinkedBlockingQueue<>(20);
+        var producerFactory = new ProducerFactory(workQueue);
         var producer = producerFactory.getWorkerWithNoInterval();
         producer.produce();
-        assertEquals(1,workList.size());
+        assertEquals(1,workQueue.size());
     }
     @Test
     void producerProducesMultipleWorkUnits_workUnitsAreCreated(){
+        BlockingQueue<Work> workQueue = new LinkedBlockingQueue<>(20);
         int expectedWorkUnits = 15;
-        List<Work> workList = new ArrayList<>();
-        var producerFactory = new ProducerFactory(workList);
+        var producerFactory = new ProducerFactory(workQueue);
         var producer = producerFactory.getWorkerWithNoInterval();
         for (int i =0; i < expectedWorkUnits; i++) {
             producer.produce();
         }
-        assertEquals(expectedWorkUnits,workList.size());
+        assertEquals(expectedWorkUnits,workQueue.size());
     }
     @Test
     void getProducerWithFixedInterval_producesAProducerWithFixedInterval(){
-        List<Work> workList = new ArrayList<>();
+        BlockingQueue<Work> workQueue = new LinkedBlockingQueue<>(20);
         int interval = 3;
-        ProducerFactory producerFactory = new ProducerFactory(workList);
+        ProducerFactory producerFactory = new ProducerFactory(workQueue);
         Producer producer = producerFactory.getWorkerWithFixedInterval(interval);
         assertEquals(interval,producer.getInterval());
     }

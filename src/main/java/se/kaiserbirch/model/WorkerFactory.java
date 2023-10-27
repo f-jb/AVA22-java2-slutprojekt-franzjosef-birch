@@ -1,15 +1,15 @@
 package se.kaiserbirch.model;
 
-import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 public abstract class WorkerFactory {
-    List<Work> workList;
+    BlockingQueue<Work> workQueue;
 
-    WorkerFactory(List<Work> workList) {
-        if (workList == null) {
+    WorkerFactory(BlockingQueue<Work> workQueue) {
+        if (workQueue == null) {
             throw new NullPointerException();
         }
-        this.workList = workList;
+        this.workQueue = workQueue;
 
     }
 
