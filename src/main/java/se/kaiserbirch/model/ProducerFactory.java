@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ProducerFactory extends WorkerFactory {
-    static int createdProducers = 0;
+    int createdProducers = 0;
 
     public ProducerFactory(List<Work> workList) {
         super(workList);
