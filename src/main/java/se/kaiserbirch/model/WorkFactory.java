@@ -1,33 +1,18 @@
 package se.kaiserbirch.model;
 
-public class WorkFactory {
-    static volatile WorkFactory workFactory;
-    private static int counter = 0;
-
-    private WorkFactory() {
-    }
+public enum WorkFactory {
+    WORK_FACTORY;
+    private static int createdWorkUnits = 0;
 
     public static void resetCounter() {
-        counter = 0;
+        createdWorkUnits = 0;
     }
 
-    public static WorkFactory getInstance() {
-        if (workFactory == null) {
-            synchronized (WorkFactory.class) {
-                if (workFactory == null) {
-                    workFactory = new WorkFactory();
-                }
-            }
-        }
-        return workFactory;
-    }
 
     public Work createWorkUnit(Producer producer) {
         if (producer == null) {
             throw new NullPointerException();
         }
-        return new Work(counter++, producer);
-
+        return new Work(createdWorkUnits++, producer);
     }
-
 }

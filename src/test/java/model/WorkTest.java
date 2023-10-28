@@ -10,6 +10,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static se.kaiserbirch.model.WorkFactory.WORK_FACTORY;
 
 public class WorkTest {
     @BeforeEach
@@ -19,8 +20,7 @@ public class WorkTest {
 
     @Test
     void createWorkWithNullProducer_throwsNullPointerException() {
-        var workFactory = WorkFactory.getInstance();
-        assertThrows(NullPointerException.class, () -> workFactory.createWorkUnit(null));
+        assertThrows(NullPointerException.class, () -> WORK_FACTORY.createWorkUnit(null));
 
     }
     @Test
@@ -29,10 +29,9 @@ public class WorkTest {
         var producerFactory = new ProducerFactory(workQueue);
         var producer = producerFactory.getWorkerWithNoInterval();
         final int expectedId = 15;
-        var workFactory = WorkFactory.getInstance();
         Work work = null;
         for (int i = 0; i < expectedId + 1 ; i++) {
-            work = workFactory.createWorkUnit(producer);
+            work = WORK_FACTORY.createWorkUnit(producer);
         }
         assertEquals(expectedId,work.getId());
 
@@ -43,9 +42,8 @@ public class WorkTest {
         var producerFactory = new ProducerFactory(workQueue);
         var firstProducer = producerFactory.getWorkerWithNoInterval();
         var secondProducer = producerFactory.getWorkerWithNoInterval();
-        var workFactory = WorkFactory.getInstance();
-        var workZero = workFactory.createWorkUnit(firstProducer);
-        var workOne = workFactory.createWorkUnit(secondProducer);
+        var workZero = WORK_FACTORY.createWorkUnit(firstProducer);
+        var workOne = WORK_FACTORY.createWorkUnit(secondProducer);
         assertEquals(workZero.getProducer(),firstProducer);
         assertEquals(workOne.getProducer(),secondProducer);
     }
