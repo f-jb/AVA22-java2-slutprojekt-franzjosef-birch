@@ -1,5 +1,6 @@
 package se.kaiserbirch.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -7,7 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class ModelController {
+public class ModelController implements Serializable {
     /*
      * LinkedBlockingQueue is ideal for our use-case. It blocks if it isn't possible
      * to perform the operation. Either .put() or .take(). Also it is optionally bounded,
@@ -19,8 +20,8 @@ public class ModelController {
     final List<Producer> activeProducers = new ArrayList<>();
     final ConsumerFactory consumerFactory = new ConsumerFactory(workQueue);
     final List<Consumer> activeConsumers = new ArrayList<>();
-    final int smallestTimeUnitForRandom = 5;
-    final int largestTimeUnitForRandom = 15;
+    final int smallestTimeUnitForRandom = 1;
+    final int largestTimeUnitForRandom = 10;
     //    ExecutorService producerExecutorService = Executors.newThreadPerTaskExecutor()
     final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
