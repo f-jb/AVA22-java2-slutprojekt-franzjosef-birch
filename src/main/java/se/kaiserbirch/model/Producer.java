@@ -3,9 +3,10 @@ package se.kaiserbirch.model;
 import java.util.concurrent.BlockingQueue;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static se.kaiserbirch.model.WorkFactory.WORK_FACTORY;
 
 public class Producer extends Worker {
-    final WorkFactory workFactory = WorkFactory.getInstance();
+    final WorkFactory workFactory = WORK_FACTORY;
 
     Producer(int id, BlockingQueue<Work> workQueue, int interval) {
         super(id, workQueue, interval);
