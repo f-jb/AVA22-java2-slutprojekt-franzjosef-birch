@@ -18,7 +18,7 @@ public enum Log {
 
     public void log(String logMessage) {
         try {
-            writer.write(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + " - " + logMessage + "\n");
+            writer.write(LocalDateTime.now() + " - " + logMessage + "\n");
             writer.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -28,7 +28,7 @@ public enum Log {
 
 
     public void openWriter() {
-        openWriter("log", String.valueOf(LocalDate.now()));
+        openWriter("log", LocalDate.now() + ".txt");
 
     }
 
