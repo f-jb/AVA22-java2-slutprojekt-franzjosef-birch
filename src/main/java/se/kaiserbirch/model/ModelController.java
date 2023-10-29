@@ -8,6 +8,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static se.kaiserbirch.model.log.Log.LOG;
+
 public class ModelController implements Serializable {
     /*
      * LinkedBlockingQueue is ideal for our use-case. It blocks if it isn't possible
@@ -24,17 +26,28 @@ public class ModelController implements Serializable {
     final int largestTimeUnitForRandom = 10;
     //    ExecutorService producerExecutorService = Executors.newThreadPerTaskExecutor()
     final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    public ModelController(){
+        LOG.openWriter();
+    }
 
     public void addANewProducer() {
         Producer producer = producerFactory.getWorkerWithRandomInterval(smallestTimeUnitForRandom, largestTimeUnitForRandom);
         activeProducers.add(producer);
         executorService.execute(producer);
+        LOG.log("Producer added. New total is " + activeProducers.size());
+        for (Producer activeProducer: activeProducers) {
+            LOG.log(activeProducer.toString());
+        }
     }
 
     public void removeFirstProducer() {
         Producer producerToRemove = activeProducers.getFirst();
         producerToRemove.stop();
         activeProducers.remove(producerToRemove);
+        LOG.log("Producer removed. New total is " + activeProducers.size());
+        for (Producer activeProducer: activeProducers) {
+            LOG.log(activeProducer.toString());
+        }
     }
 
     public void addANewConsumer() {
