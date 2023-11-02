@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static se.kaiserbirch.model.log.Log.LOG;
+import static se.kaiserbirch.log.Log.LOG;
 
 public class LogTest {
     @Test
@@ -29,8 +29,8 @@ public class LogTest {
         String testDir = "logTestDir";
         String testFile = "logTest.txt";
         LOG.openWriter(testDir, testFile);
-        LOG.log("Test Message");
-        List<String> messageList = LOG.openReader(testDir, testFile);
+        LOG.write("Test Message");
+        List<String> messageList = LOG.read(testDir, testFile);
         System.out.println(messageList.size());
         Files.deleteIfExists(Paths.get(testDir, testFile));
         Files.deleteIfExists(Paths.get(testDir));

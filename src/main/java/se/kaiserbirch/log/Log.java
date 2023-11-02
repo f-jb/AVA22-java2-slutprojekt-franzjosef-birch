@@ -1,4 +1,4 @@
-package se.kaiserbirch.model.log;
+package se.kaiserbirch.log;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -8,18 +8,30 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Flow.Publisher;
+import java.util.concurrent.Flow.Subscriber;
+import java.util.concurrent.SubmissionPublisher;
 
-public enum Log {
+public enum Log implements Publisher<String> {
     LOG;
+    private final SubmissionPublisher<String> submissionPublisher= new SubmissionPublisher<>();
     private BufferedWriter writer;
 
-    public void log(String logMessage) {
+    public void write(String logMessage) {
         try {
-            writer.write(LocalDateTime.now() + " - " + logMessage + "\n");
-            writer.flush();
+            String messageWithTimeStamp = LocalDateTime.now() + " - " + logMessage + "\n";
+            /*
+            * I think this needs to be synchronized so the log-file and log-view is the same.
+            * The risk would otherwise be that the message is viewed, thread paused before writing the file.
+            * Another thread jumps in, shows another message and writes it before the first message is written and saved.
+             */
+            synchronized (this) {
+                submissionPublisher.submit(messageWithTimeStamp);
+                writer.write(messageWithTimeStamp);
+                writer.flush();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -50,11 +62,11 @@ public enum Log {
     }
 
 
-    public List<String> openReader() {
-        return openReader("log", LocalDate.now() + ".txt");
+    public List<String> read() {
+        return read("log", LocalDate.now() + ".txt");
     }
 
-    public List<String> openReader(String logDirectoryName, String logFileName) {
+    public List<String> read(String logDirectoryName, String logFileName) {
         Path logFile = Paths.get(logFileName);
         Path logDirectory = Paths.get(logDirectoryName);
         Path finalPath = logDirectory.resolve(logFile);
@@ -68,5 +80,10 @@ public enum Log {
             }
         }
         return logHistory;
+    }
+
+    @Override
+    public void subscribe(Subscriber<? super String> subscriber) {
+        this.submissionPublisher.subscribe(subscriber);
     }
 }
