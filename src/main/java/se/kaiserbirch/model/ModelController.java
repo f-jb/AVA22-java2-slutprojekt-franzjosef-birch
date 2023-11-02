@@ -46,12 +46,14 @@ public class ModelController implements Serializable {
     }
 
     public void removeFirstProducer() {
-        Producer producerToRemove = activeProducers.getFirst();
-        producerToRemove.stop();
-        activeProducers.remove(producerToRemove);
-        LOG.write("Producer removed. New total is " + activeProducers.size());
-        for (Producer activeProducer: activeProducers) {
-            LOG.write(activeProducer.toString());
+        if(!activeProducers.isEmpty()) {
+            Producer producerToRemove = activeProducers.getFirst();
+            producerToRemove.stop();
+            activeProducers.remove(producerToRemove);
+            LOG.write("Producer removed. New total is " + activeProducers.size());
+            for (Producer activeProducer : activeProducers) {
+                LOG.write(activeProducer.toString());
+            }
         }
     }
 
