@@ -33,10 +33,22 @@ public class ProgressAndButtonsView extends JPanel{
         add(removeProducerButton,gridBagConstraints);
     }
 
+    public void setProgress(int amountOfWorkUnitsInQueue) {
+        if(amountOfWorkUnitsInQueue <= progressBar.getMaximum()* 0.1){
+            progressBar.setBackground(Color.RED);
+        }else if(amountOfWorkUnitsInQueue >= progressBar.getMaximum()* 0.9){
+            progressBar.setBackground(Color.RED);
+        } else {
+            progressBar.setBackground(Color.GREEN);
+        }
+        progressBar.setValue(amountOfWorkUnitsInQueue);
+        progressBar.validate();
+    }
+
     public static class Builder{
         JButton addProducerButton = new JButton();
         JButton removeProducerButton = new JButton();
-        JProgressBar progressBar = new JProgressBar(0,20);
+        JProgressBar progressBar = new JProgressBar(0,100);
         public Builder setAddProducerButtonText(String addProducerButtonText){
             addProducerButton.setText(addProducerButtonText);
             return this;
