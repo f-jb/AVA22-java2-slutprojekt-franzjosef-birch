@@ -1,7 +1,6 @@
 package se.kaiserbirch.log;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.concurrent.Flow;
 import java.util.concurrent.SubmissionPublisher;
 

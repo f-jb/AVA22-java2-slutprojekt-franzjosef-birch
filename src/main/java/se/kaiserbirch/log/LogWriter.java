@@ -10,11 +10,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.SubmissionPublisher;
 
 public enum LogWriter {
     INSTANCE;
-    private final SubmissionPublisher<String> submissionPublisher = new SubmissionPublisher<>();
     private BufferedWriter writer;
     private Path pathToLogFile = Paths.get("log", LocalDate.now() + ".txt");
 
