@@ -53,11 +53,9 @@ public class ModelController implements Serializable {
             producerToRemove.stop();
             activeProducers.remove(producerToRemove);
             LOG.entry("Producer removed. New total is " + activeProducers.size());
-            StringBuilder listOfActiveProducers = new StringBuilder();
             for (Producer activeProducer : activeProducers) {
-                listOfActiveProducers.append(activeProducer.toString());
+                LOG.entry(activeProducer.toString());
             }
-            LOG.entry(listOfActiveProducers.toString());
         }
     }
 
