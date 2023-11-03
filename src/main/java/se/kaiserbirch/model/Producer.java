@@ -32,6 +32,6 @@ public class Producer extends Worker {
 
     @Override
     public String toString() {
-        return "Producer " + id + " with interval " + interval;
+        return "ID: " + id + "\tInterval: " + interval;
     }
 }

@@ -10,13 +10,27 @@ public class ProgressAndButtonsView extends JPanel{
     JButton removeProducerButton;
 
     private ProgressAndButtonsView(Builder builder) {
-        setLayout(new FlowLayout());
+        setLayout(new GridBagLayout());
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        this.progressBar = builder.progressBar;
+
         this.addProducerButton = builder.addProducerButton;
         this.removeProducerButton = builder.removeProducerButton;
-        this.progressBar = builder.progressBar;
-        add(progressBar);
-        add(addProducerButton);
-        add(removeProducerButton);
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.weightx = 1;
+        gridBagConstraints.weighty = 1;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        add(progressBar,gridBagConstraints);
+        gridBagConstraints.weightx = 0;
+        gridBagConstraints.weighty = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+        add(addProducerButton,gridBagConstraints);
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 1;
+        add(removeProducerButton,gridBagConstraints);
     }
 
     public static class Builder{

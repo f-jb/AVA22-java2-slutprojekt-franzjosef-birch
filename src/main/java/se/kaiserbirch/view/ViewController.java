@@ -14,6 +14,7 @@ public class ViewController extends JFrame implements Flow.Subscriber<String>{
     Controller controller;
     public ViewController(Controller controller){
         this.controller = controller;
+        controller.subscribe(this);
     }
     public void init(){
         ProgressAndButtonsView progressAndButtonsView = new ProgressAndButtonsView.Builder()
@@ -22,9 +23,14 @@ public class ViewController extends JFrame implements Flow.Subscriber<String>{
                 .setAddProducerFunction(e -> controller.addProducer())
                 .setRemoveProducerFunction(e -> controller.removeProducer())
                 .build();
-        setLayout(new BorderLayout());
-        add(progressAndButtonsView,BorderLayout.CENTER);
-        add(logView,BorderLayout.PAGE_END);
+        setLayout(new GridBagLayout());
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridx = 0;
+        add(progressAndButtonsView,gridBagConstraints);
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 0;
+        add(logView,gridBagConstraints);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
         setVisible(true);
@@ -38,8 +44,10 @@ public class ViewController extends JFrame implements Flow.Subscriber<String>{
     }
 
     @Override
-    public void onNext(String item) {
-        logView.addToLog(item);
+    public void onNext(String entry) {
+        logView.addToLog(entry);
+        revalidate();
+        subscription.request(1);
     }
 
     @Override
