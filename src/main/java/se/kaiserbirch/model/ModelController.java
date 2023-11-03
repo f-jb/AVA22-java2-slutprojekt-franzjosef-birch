@@ -1,16 +1,15 @@
 package se.kaiserbirch.model;
 
 import java.io.Serializable;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
-import static java.lang.Thread.sleep;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static se.kaiserbirch.log.Log.LOG;
 
-public class ModelController implements Serializable, Flow.Publisher<Integer> {
-    private final int workQueueCapacity = 20;
+public class ModelController implements Serializable{
+    private final int workQueueCapacity = 100;
     private final SubmissionPublisher<Integer> workQueueSizePublisher= new SubmissionPublisher<>();
 
     public int getAmountOfUnitsInWorkQueue() {
@@ -35,13 +34,16 @@ public class ModelController implements Serializable, Flow.Publisher<Integer> {
     final List<Consumer> activeConsumers = new ArrayList<>();
     final int smallestTimeUnitForRandom = 1;
     final int largestTimeUnitForRandom = 10;
-    //    ExecutorService producerExecutorService = Executors.newThreadPerTaskExecutor()
-    final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+     final ExecutorService executorService = Executors.newThreadPerTaskExecutor(Executors.defaultThreadFactory());
 
     public ModelController(){
-        executorService.execute(new Warnings(1));
+        executorService.execute(new Warnings(2));
         executorService.execute(new AverageProduction(10));
-        executorService.execute(new WorkQueuePercentage(1));
+        int amountOfConsumer = ThreadLocalRandom.current().nextInt(3,15);
+        for (int i = 0; i < amountOfConsumer; i++){
+            addANewConsumer();
+        }
+
     }
 
     public void addANewProducer() {
@@ -74,31 +76,7 @@ public class ModelController implements Serializable, Flow.Publisher<Integer> {
         executorService.execute(consumer);
     }
 
-    @Override
-    public void subscribe(Flow.Subscriber<? super Integer> subscriber) {
-        workQueueSizePublisher.subscribe(subscriber);
 
-    }
-
-    private class WorkQueuePercentage implements Runnable {
-        boolean active = true;
-        int interval;
-        WorkQueuePercentage(int interval){
-            this.interval = interval;
-        }
-        @Override
-        public void run() {
-            while (active){
-                try {
-                    workQueueSizePublisher.submit(workQueue.size());
-                    sleep(Duration.ofSeconds(interval));
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-        }
-    }
     private class Warnings implements Runnable{
         boolean active = true;
         int interval;
@@ -117,7 +95,7 @@ public class ModelController implements Serializable, Flow.Publisher<Integer> {
                 if (workQueue.size() >= workQueueCapacity * 0.9) {
                     LOG.entry("High units of work");
                 }
-                sleep(Duration.ofSeconds(interval));
+                SECONDS.sleep(interval);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -143,7 +121,12 @@ public class ModelController implements Serializable, Flow.Publisher<Integer> {
                     averageProduction += (float) 1 / producer.getInterval();
                 }
                 LOG.entry("Average production is " + averageProduction);
-                    sleep(Duration.ofSeconds(interval));
+                    float averageConsumtion= 0;
+                    for (Consumer consumer: activeConsumers) {
+                        averageConsumtion += (float) 1 / consumer.getInterval();
+                    }
+                    LOG.entry("Average consumtion is " + averageConsumtion);
+                    SECONDS.sleep(interval);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
