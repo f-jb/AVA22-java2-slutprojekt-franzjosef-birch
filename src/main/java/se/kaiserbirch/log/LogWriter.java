@@ -10,24 +10,22 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Flow.Publisher;
-import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.SubmissionPublisher;
 
 public enum LogWriter {
     INSTANCE;
-    private final SubmissionPublisher<String> submissionPublisher= new SubmissionPublisher<>();
+    private final SubmissionPublisher<String> submissionPublisher = new SubmissionPublisher<>();
     private BufferedWriter writer;
     private Path pathToLogFile = Paths.get("log", LocalDate.now() + ".txt");
 
     public void write(String logMessage) {
-        if(writer == null){
+        if (writer == null) {
             writer = openWriter();
         }
         try {
             String messageWithTimeStamp = LocalDateTime.now() + " - " + logMessage + "\n";
-                writer.write(messageWithTimeStamp);
-                writer.flush();
+            writer.write(messageWithTimeStamp);
+            writer.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -58,9 +56,9 @@ public enum LogWriter {
         return logHistory;
     }
 
-    private void createLogFile(Path pathToLogFile){
+    private void createLogFile(Path pathToLogFile) {
         try {
-            if(Files.notExists(pathToLogFile.getParent())){
+            if (Files.notExists(pathToLogFile.getParent())) {
                 Files.createDirectories(pathToLogFile.getParent());
             }
             if (Files.notExists(pathToLogFile)) {
@@ -72,6 +70,7 @@ public enum LogWriter {
         }
 
     }
+
     public void setPathToLogFile(Path pathToLogFile) {
         this.pathToLogFile = pathToLogFile;
     }

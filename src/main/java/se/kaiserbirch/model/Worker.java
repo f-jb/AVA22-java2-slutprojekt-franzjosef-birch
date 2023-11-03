@@ -5,8 +5,8 @@ import java.util.concurrent.BlockingQueue;
 public abstract class Worker implements Runnable {
     final int id;
     final int interval;
-    boolean active;
     final BlockingQueue<Work> workQueue;
+    boolean active;
 
     Worker(int id, BlockingQueue<Work> workQueue, int interval) {
         this.id = id;

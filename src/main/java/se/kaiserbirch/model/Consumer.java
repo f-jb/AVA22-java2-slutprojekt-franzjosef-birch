@@ -1,9 +1,7 @@
 package se.kaiserbirch.model;
 
-import java.time.Duration;
 import java.util.concurrent.BlockingQueue;
 
-import static java.lang.Thread.sleep;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class Consumer extends Worker {
@@ -22,7 +20,7 @@ public class Consumer extends Worker {
         while (active) {
             try {
                 SECONDS.sleep(interval);
-                if(!workQueue.isEmpty()) {
+                if (!workQueue.isEmpty()) {
                     workQueue.take();
                 }
             } catch (InterruptedException e) {
@@ -30,6 +28,7 @@ public class Consumer extends Worker {
             }
         }
     }
+
     @Override
     public String toString() {
         return "ID: " + id + " Interval: " + interval;

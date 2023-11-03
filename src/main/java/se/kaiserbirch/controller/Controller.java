@@ -10,11 +10,12 @@ import java.util.concurrent.SubmissionPublisher;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-public class Controller implements Flow.Processor<String, UIState>{
+public class Controller implements Flow.Processor<String, UIState> {
     SubmissionPublisher<UIState> submissionPublisher = new SubmissionPublisher<>();
     Flow.Subscription subscription;
     ModelController modelController;
-    public Controller(ModelController modelController){
+
+    public Controller(ModelController modelController) {
         Log.LOG.subscribe(this);
         this.modelController = modelController;
         final ExecutorService executorService = Executors.newFixedThreadPool(1);
@@ -53,7 +54,8 @@ public class Controller implements Flow.Processor<String, UIState>{
     public void addProducer() {
         modelController.addANewProducer();
     }
-    public void removeProducer(){
+
+    public void removeProducer() {
         modelController.removeFirstProducer();
     }
 
@@ -62,20 +64,21 @@ public class Controller implements Flow.Processor<String, UIState>{
     public void subscribe(Flow.Subscriber<? super UIState> subscriber) {
         this.submissionPublisher.subscribe(subscriber);
     }
-    private class WorkPercentageChecker implements Runnable{
+
+    private class WorkPercentageChecker implements Runnable {
         boolean active = true;
 
         @Override
         public void run() {
-            while (active){
+            while (active) {
                 try {
-                int amountOfWorkUnits = modelController.getAmountOfUnitsInWorkQueue();
-                UIState stateToSend = new UIState.Builder()
-                        .setUpdate(UIState.Updated.WORK_UNITS)
-                        .setAmountOfWorkUnitsInQueue(amountOfWorkUnits)
-                        .build();
-                submissionPublisher.submit(stateToSend);
-                SECONDS.sleep(1);
+                    int amountOfWorkUnits = modelController.getAmountOfUnitsInWorkQueue();
+                    UIState stateToSend = new UIState.Builder()
+                            .setUpdate(UIState.Updated.WORK_UNITS)
+                            .setAmountOfWorkUnitsInQueue(amountOfWorkUnits)
+                            .build();
+                    submissionPublisher.submit(stateToSend);
+                    SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

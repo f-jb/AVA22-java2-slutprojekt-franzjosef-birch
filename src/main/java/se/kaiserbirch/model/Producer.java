@@ -1,9 +1,7 @@
 package se.kaiserbirch.model;
 
-import java.time.Duration;
 import java.util.concurrent.BlockingQueue;
 
-import static java.lang.Thread.sleep;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static se.kaiserbirch.model.WorkFactory.WORK_FACTORY;
 
