@@ -1,6 +1,7 @@
 package se.kaiserbirch.view;
 
 import se.kaiserbirch.controller.Controller;
+import se.kaiserbirch.controller.UIState;
 import se.kaiserbirch.view.views.LogView;
 import se.kaiserbirch.view.views.ProgressAndButtonsView;
 
@@ -8,16 +9,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.Flow;
 
-public class ViewController extends JFrame implements Flow.Subscriber<String>{
+public class ViewController extends JFrame implements Flow.Subscriber<UIState>{
     private Flow.Subscription subscription;
     private final LogView logView = new LogView();
+    private ProgressAndButtonsView progressAndButtonsView;
     Controller controller;
     public ViewController(Controller controller){
         this.controller = controller;
         controller.subscribe(this);
     }
     public void init(){
-        ProgressAndButtonsView progressAndButtonsView = new ProgressAndButtonsView.Builder()
+        progressAndButtonsView = new ProgressAndButtonsView.Builder()
                 .setAddProducerButtonText("Add Producer")
                 .setRemoveProducerButtonText("Remove Producer")
                 .setAddProducerFunction(e -> controller.addProducer())
@@ -44,8 +46,13 @@ public class ViewController extends JFrame implements Flow.Subscriber<String>{
     }
 
     @Override
-    public void onNext(String entry) {
-        logView.addToLog(entry);
+    public void onNext(UIState entry) {
+        switch (entry.getUpdated()){
+            case LOG_ENTRY -> logView.addToLog(entry.getLogEntry());
+            case WORK_UNITS -> progressAndButtonsView.setProgress(entry.getAmountOfWorkUnitsInQueue());
+
+        }
+
         revalidate();
         subscription.request(1);
     }
