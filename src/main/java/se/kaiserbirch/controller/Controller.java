@@ -66,7 +66,7 @@ public class Controller implements Flow.Processor<String, UIState> {
     }
 
     private class WorkPercentageChecker implements Runnable {
-        boolean active = true;
+        private boolean active = true;
 
         @Override
         public void run() {
