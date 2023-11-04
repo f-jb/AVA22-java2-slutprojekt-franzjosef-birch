@@ -15,6 +15,7 @@ Det första jag skrev var WorkFactory och WorkerFactory. Därefter kopplade jag 
 
 Med logiken färdig så var det bara att skriva Controller och View. Dessa skrevs ganska så parallellt. GUI är krångligt att få till rätt och det finns lite udda beteende i programmet.
 
+![UML class diagram](AvanceradJavaSlutprojekt.jpg)
 
 [^1]: Sierra, Kathy & Bates, Bert & Gee, Trisha - Head First Java, Third Edition (2022). O'Reilly Media, Inc. 
 [^2]: Bloch, Joshua  - Effective Java, Third Edition (2018). Addison-Wesley. 
